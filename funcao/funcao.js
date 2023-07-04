@@ -2,10 +2,19 @@
 function funil(){
 
 }
+// function declaration
+function soma(x,y){
+    return x+y
+}
 
 //armazenar em uma variável
 const fun2 = function () {
 
+}
+
+// function expression
+const sub = function (x,y){
+    return x - y
 }
 
 //armazenar em um array
@@ -24,7 +33,7 @@ function run (fun) {
 
 run (function () {console.log('Executando...')})
 
-//Uma função pode retonrar/conter uma função
+//Uma função pode retonar/conter uma função
 function soma( a, b ) {
     return function (c){
         console.log(a + b + c)
@@ -67,3 +76,75 @@ falar()//conflito entre paradigmas : funcional e OO
 
 const falarDePessoa = pessoa.falar.bind(pessoa)// o this é o objeto (pessoa)
 falarDePessoa()
+
+//Sem callback
+
+const notasBaixas1 = []
+for(let i in notas){
+    if (notas[i] < 7) {
+        notasBaixas1.push(notas[i])
+    }
+}
+console.log(notasBaixas1)
+
+//Com callback
+const notasBaixas2 = notas.filter(function (nota){
+    return nota < 7
+})
+console.log(notasBaixas2)
+
+//Callback e abordagem funcional (código reduzido)
+const notasBaixas3 = notas.filter(nota => nota < 7)
+    console.log(notasBaixas3)
+
+//exemplo do callback no browser
+
+document.getElementsByTagName('body')[0].onclick = function (e){
+    console.log('O evento ocorreu!')
+}
+
+
+//Função construtora
+//
+
+function Carro (velocidadeMaxima = 200, delta = 5){
+
+//atributo privado. Poderia ser qlq variavel (var, let)
+    let velocidadeAtual = 0
+
+//metodo publico, pela palavra 'this'
+    this.acelerar = function(){
+        if (velocidadeAtual + delta <= velocidadeMaxima){
+            velocidadeAtual += delta
+        }else {
+            velocidadeAtual = velocidadeMaxima
+        }
+    }
+
+//metodo publico
+this.getVelocidadeAtual = function(){
+    return velocidadeAtual
+}
+}
+
+const uno = new Carro //instanciar +
+uno.acelerar()
+console.log(uno.getVelocidadeAtual())
+
+const ferrari = new Carro (350,20)
+ferrari.acelerar()
+ferrari.acelerar() //2 chamada, pode chamar quantas vezes quiser
+console.log(ferrari.getVelocidadeAtual())
+
+//contexto léxico em ação!
+const x = 'Global'
+function fora(){
+    const x = 'Local'
+    function dentro (){
+        return x
+    }
+    return dentro
+}
+
+const minhaFuncao = fora()
+console.log(minhaFuncao())
